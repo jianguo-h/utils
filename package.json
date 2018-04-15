@@ -1,0 +1,19 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "common tool functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snow-imprint/utils.git"
+  },
+  "author": "jianguo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snow-imprint/utils/issues"
+  },
+  "homepage": "https://github.com/snow-imprint/utils#readme"
+}
