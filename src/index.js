@@ -85,12 +85,12 @@ const formatDate = date => {
   let year, month, day;
   const type = getType(date);
   if(!['date', 'string', 'number'].includes(type)) {
-    throw new Error('date type must be Date instance or number or string');
+    throw new Error('date type must be Date instance or number or string number');
   }
   if(['string', 'number'].includes(type)) {
     date = Number(date);
     if(Number.isNaN(date)) {
-      throw new Error('date value has an error');
+      throw new Error('date value has an error' + date);
     }
     date = new Date(date);
   }
@@ -101,4 +101,23 @@ const formatDate = date => {
   day = day < 10 ? ('0' + day) : day;
 
   return year + '-' + month + '-' + day;
+}
+
+/*
+ * 判断年份是否为闰年
+ * @param year 年份
+ */
+const isLeapYear = year => {
+  const type = getType(year);
+  year = Number(year)
+  if(['string', 'number'].includes(type)) {
+    throw new Error('year type must be number or string number');
+  }
+  if(Number.isNaN(year)) {
+    throw new Error('year value has an error' + year);
+  }
+  if((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+    return true;
+  }
+  return false;
 }
