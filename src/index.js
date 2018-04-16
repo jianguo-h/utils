@@ -76,3 +76,29 @@ const deepClone = (obj) => {
 const merge = (...args) => {
   console.log('>>> args', args);
 }
+
+/*
+ * 格式化日期
+ * @param date Date实例 or 数值 or 字符串数值
+ */
+const formatDate = date => {
+  let year, month, day;
+  const type = getType(date);
+  if(!['date', 'string', 'number'].includes(type)) {
+    throw new Error('date type must be Date instance or number or string');
+  }
+  if(['string', 'number'].includes(type)) {
+    date = Number(date);
+    if(Number.isNaN(date)) {
+      throw new Error('date value has an error');
+    }
+    date = new Date(date);
+  }
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  month = month < 10 ? ('0' + month) : month;
+  day = day < 10 ? ('0' + day) : day;
+
+  return year + '-' + month + '-' + day;
+}
