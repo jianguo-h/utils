@@ -121,3 +121,42 @@ const isLeapYear = year => {
   }
   return false;
 }
+
+/*
+ * 获取浏览器版本信息
+ */
+const getBrowserVersion = () => {
+  let browser = '';
+  const ua = window.navigator.userAgent.toLowerCase();
+  if(ua.includes('chrome') && ua.includes('safari') && !ua.includes('edge')) {
+    browser = 'chrome';
+  }
+  else if(ua.includes('firefox')) {
+    browser = 'firefox';
+  }
+  else if(ua.includes('opera')) {
+    browser = 'opera';
+  }
+  else if(ua.includes('edge')) {
+    browser = 'edge';
+  }
+  else if(ua.includes('safari') && !ua.includes('chrome')) {
+    browser = 'safari';
+  }
+  else if((ua.includes('compatible') && ua.includes('msie')) || ua.includes('trident')) {
+    browser = 'ie';
+  }
+  // 如果是 ie 浏览器则判断其版本
+  if(browser === 'ie') {
+    let ieVersion = 0;
+    if(ua.includes('gecko') && !ua.includes('mise')) {
+      const num = ua.match(/trident\/([\w.]+)/);
+      ieVersion = num[1] === '7.0' ? 11 : 9;
+    }
+    else {
+      ieVersion = parseInt(ua.match(/msie ([\d.]+)/)[1]);
+    }
+    browser += ieVersion;
+  }
+  return browser;
+}
