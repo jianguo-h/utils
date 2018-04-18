@@ -55,12 +55,12 @@ const deepClone = (obj) => {
   let target;
   const type = getType(obj);
   if(type === 'array') {
-    target = obj.map(item => item);
+    target = obj.map(item => deepClone(item));
   }
   else if(type === 'object') {
     target = {};
     for(const [key, val] of Object.entries(obj)) {
-      target[key] = val;
+      target[key] = deepClone(val);
     }
   }
   else {
