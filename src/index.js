@@ -1,9 +1,13 @@
+if(module.hot) {
+  module.hot.accept();
+}
+
 /*
  * 将数字转化为百分比
  * @param val 传入的值
  * @param bit 固定小数的位数, default: 2
  */
-/*export */const toPercent = (val, bit = 2) => {
+export const toPercent = (val, bit = 2) => {
   const num = Number(val);
   if(typeof val === 'boolean') {
     throw new Error('val type is boolean');
@@ -22,7 +26,7 @@
  * @param val 传入的值
  * @param bit 固定小数的位数
  */
-/*export */const toDecimal = (val, bit) => {
+export const toDecimal = (val, bit) => {
   const num = Number(val);
   if(typeof val === 'boolean') {
     throw new Error('val type is boolean');
@@ -40,7 +44,7 @@
  * 判断一个值得基本类型
  * @param val 传入的值
  */
-/*export */const getType = (val) => {
+export const getType = val => {
   const string = Object.prototype.toString.call(val);
   const start = string.indexOf(' ') + 1;
   const end = string.length - 1;
@@ -51,7 +55,7 @@
  * 深度克隆
  * @param obj 要克隆的对象
  */
-const deepClone = (obj) => {
+export const deepClone = obj => {
   let target;
   const type = getType(obj);
   if(type === 'array') {
@@ -73,7 +77,7 @@ const deepClone = (obj) => {
  * 合并多个对象
  * @param 参数个数不定, 每个参数为一个对象
  */
-const merge = (...args) => {
+export const merge = (...args) => {
   console.log('>>> args', args);
 }
 
@@ -81,7 +85,7 @@ const merge = (...args) => {
  * 格式化日期
  * @param date Date实例 or 数值 or 字符串数值
  */
-const formatDate = date => {
+export const formatDate = date => {
   let year, month, day;
   const type = getType(date);
   if(!['date', 'string', 'number'].includes(type)) {
@@ -107,10 +111,10 @@ const formatDate = date => {
  * 判断年份是否为闰年
  * @param year 年份
  */
-const isLeapYear = year => {
+export const isLeapYear = year => {
   const type = getType(year);
   year = Number(year)
-  if(['string', 'number'].includes(type)) {
+  if(!['string', 'number'].includes(type)) {
     throw new Error('year type must be number or string number');
   }
   if(Number.isNaN(year)) {
@@ -125,7 +129,7 @@ const isLeapYear = year => {
 /*
  * 获取浏览器版本信息
  */
-const getBrowserVersion = () => {
+export const getBrowserVersion = () => {
   let browser = '';
   const ua = window.navigator.userAgent.toLowerCase();
   if(ua.includes('chrome') && ua.includes('safari') && !ua.includes('edge')) {
@@ -159,4 +163,34 @@ const getBrowserVersion = () => {
     browser += ieVersion;
   }
   return browser;
+}
+
+/*
+ * 每隔3位加上',', 小数点部分除外
+ * @param num 传入的数字
+ */
+export const miliFormat = num => {
+  const type = getType(num);
+  let val = Number(num);
+  if(!['string', 'number'].includes(type)) {
+    throw new Error('val type must be number or string number');
+  }
+  if(Number.isNaN(val)) {
+    console.warn('val has an error and it val is' + val);
+    return num;
+  }
+  /*let outVal = '';
+  const [val1, val2] = val.toString().split('.');
+  const len = val1.length;
+  for(let i = 0; i < len; i++) {
+    outVal += val1[i];
+    if(i % 3 === 0 && i !== len - 1) {
+      outVal += ','
+    }
+  }
+  if(val2) {
+    outVal += '.'
+  }
+  return outVal;*/
+  return val.toString().replace(/(^|\s)\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','));
 }
