@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/snow-imprint/utils.git"
+    "url": "git+https://github.com/jianguo-h/utils.git"
   },
   "author": "jianguo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/snow-imprint/utils/issues"
+    "url": "https://github.com/jianguo-h/utils/issues"
   },
-  "homepage": "https://github.com/snow-imprint/utils#readme",
+  "homepage": "https://github.com/jianguo-h/utils#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
