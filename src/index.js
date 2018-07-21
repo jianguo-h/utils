@@ -92,11 +92,10 @@ export const formatDate = date => {
     throw new Error('date type must be Date instance or number or string number');
   }
   if(['string', 'number'].includes(type)) {
-    date = Number(date);
-    if(Number.isNaN(date)) {
+    date = new Date(date);
+    if(Number.isNaN(date.getTime())) {
       throw new Error('date value has an error' + date);
     }
-    date = new Date(date);
   }
   year = date.getFullYear();
   month = date.getMonth() + 1;
