@@ -24,9 +24,9 @@ export const toPercent = (val, bit = 2) => {
 /*
  * 固定数值的小数位数
  * @param val 传入的值
- * @param bit 固定小数的位数
+ * @param bit 固定小数的位数, default: 2
  */
-export const toDecimal = (val, bit) => {
+export const toDecimal = (val, bit = 2) => {
   const num = Number(val);
   if(typeof val === 'boolean') {
     throw new Error('val type is boolean');
@@ -84,10 +84,15 @@ export const merge = (...args) => {
 /*
  * 格式化日期
  * @param date Date实例 or 数值 or 字符串数值
+ * @param format 日期格式, default: yyyy-MM-dd
  */
-export const formatDate = date => {
-  let year, month, day;
+const defaultFormat = 'yyyy-MM-dd';
+const formatList = ['yyyy-MM-dd', 'yyyy-MM', 'MM-dd', 'yyyy-MM-dd HH:mm:ss',
+  'yyyy-MM-dd HH:mm', 'MM-dd HH:mm:ss', 'MM-dd HH:mm'
+];
+export const formatDate = (date, format = defaultFormat) => {
   const type = getType(date);
+  format = formatList.includes(format) ? format : defaultFormat;
   if(!['date', 'string', 'number'].includes(type)) {
     throw new Error('date type must be Date instance or number or string number');
   }
@@ -97,13 +102,44 @@ export const formatDate = date => {
       throw new Error('date value has an error' + date);
     }
   }
-  year = date.getFullYear();
-  month = date.getMonth() + 1;
-  day = date.getDate();
-  month = month < 10 ? ('0' + month) : month;
-  day = day < 10 ? ('0' + day) : day;
 
-  return year + '-' + month + '-' + day;
+  function fillZero(val) {
+    return val < 10 ? ('0' + val) : val;
+  }
+
+  const year = date.getFullYear();
+  const month = fillZero(date.getMonth() + 1);
+  const day = fillZero(date.getDate());
+  const hour = fillZero(date.getHours());
+  const minute = fillZero(date.getMinutes());
+  const second = fillZero(date.getSeconds());
+
+  let finalDate;
+  switch(format) {
+    case defaultFormat:
+      finalDate = year + '-' + month + '-' + day;
+      break;
+    case 'yyyy-MM':
+      finalDate = year + '-' + month;
+      break;
+    case 'MM-dd':
+      finalDate = month + '-' + day;
+      break;
+    case 'yyyy-MM-dd HH:mm:ss':
+      finalDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+      break;
+    case 'yyyy-MM-dd HH:mm':
+      finalDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+      break;
+    case 'MM-dd HH:mm:ss':
+      finalDate = month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+      break;
+    case 'MM-dd HH:mm':
+      finalDate = month + '-' + day + ' ' + hour + ':' + minute
+      break;
+  }
+
+  return finalDate;
 }
 
 /*
@@ -206,4 +242,36 @@ export const judgePlatform = () => {
     }
   }
   return 'pc';
+}
+
+/*
+ * 判断一个值是否未定义
+ * @param val 检测的值
+ */
+export const isUndef = val => {
+  return val === undefined || val === null;
+}
+
+/*
+ * 判断一个值是否为空, 支持检测的类型有限
+ * @param val 检测的值
+ */
+export const isEmpty = val => {
+  if(isUndef(val)) {
+    throw new Error('val is not defined');
+  }
+
+  const type = getType(val);
+  if(type === 'string' || type === 'array') {
+    return val.length === 0;
+  }
+  else if(type === 'object') {
+    if(Object.keys(val).length === 0) {
+      return true;
+    }
+  }
+  else if(type === 'set' || type === 'map') {
+    return val.size() === 0;
+  }
+  return false;
 }
