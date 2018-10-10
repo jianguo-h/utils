@@ -88,7 +88,7 @@ export const merge = (...args) => {
  */
 const defaultFormat = 'yyyy-MM-dd';
 const formatList = ['yyyy-MM-dd', 'yyyy-MM', 'MM-dd', 'yyyy-MM-dd HH:mm:ss',
-  'yyyy-MM-dd HH:mm', 'MM-dd HH:mm:ss', 'MM-dd HH:mm'
+  'yyyy-MM-dd HH:mm', 'MM-dd HH:mm:ss', 'MM-dd HH:mm', 'HH:mm:ss', 'HH:mm'
 ];
 export const formatDate = (date, format = defaultFormat) => {
   const type = getType(date);
@@ -136,6 +136,12 @@ export const formatDate = (date, format = defaultFormat) => {
       break;
     case 'MM-dd HH:mm':
       finalDate = month + '-' + day + ' ' + hour + ':' + minute
+      break;
+    case 'HH:mm:ss':
+      finalDate = hour + ':' + minute + ':' + second;
+      break;
+    case 'HH:mm':
+      finalDate = hour + ':' + minute;
       break;
   }
 
@@ -266,9 +272,7 @@ export const isEmpty = val => {
     return val.length === 0;
   }
   else if(type === 'object') {
-    if(Object.keys(val).length === 0) {
-      return true;
-    }
+    return Object.keys(val).length === 0;
   }
   else if(type === 'set' || type === 'map') {
     return val.size() === 0;
