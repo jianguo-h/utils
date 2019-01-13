@@ -2,12 +2,12 @@ if(module.hot) {
   module.hot.accept();
 }
 
-/*
+/**
  * 将数字转化为百分比
- * @param val 传入的值
- * @param bit 固定小数的位数, default: 2
+ * @param {val} 传入的值
+ * @param {bit} 固定小数的位数, default: 2
  */
-export const toPercent = (val, bit = 2) => {
+export function toPercent(val, bit = 2) {
   const num = Number(val);
   if(typeof val === 'boolean') {
     throw new Error('val type is boolean');
@@ -21,12 +21,12 @@ export const toPercent = (val, bit = 2) => {
   return (num * 100).toFixed(bit) + '%';
 }
 
-/*
+/**
  * 固定数值的小数位数
- * @param val 传入的值
- * @param bit 固定小数的位数, default: 2
+ * @param {val} 传入的值
+ * @param {bit} 固定小数的位数, default: 2
  */
-export const toDecimal = (val, bit = 2) => {
+export function toDecimal(val, bit = 2) {
   const num = Number(val);
   if(typeof val === 'boolean') {
     throw new Error('val type is boolean');
@@ -40,22 +40,22 @@ export const toDecimal = (val, bit = 2) => {
   return num.toFixed(bit);
 }
 
-/*
+/**
  * 判断一个值得基本类型
- * @param val 传入的值
+ * @param {val} 传入的值
  */
-export const getType = val => {
+export function getType(val) {
   const string = Object.prototype.toString.call(val);
   const start = string.indexOf(' ') + 1;
   const end = string.length - 1;
   return string.slice(start, end).toLowerCase();
 }
 
-/*
+/**
  * 深度克隆
- * @param obj 要克隆的对象
+ * @param {obj} 要克隆的对象
  */
-export const deepClone = obj => {
+export function deepClone(obj) {
   let target;
   const type = getType(obj);
   if(type === 'array') {
@@ -73,24 +73,17 @@ export const deepClone = obj => {
   return target;
 }
 
-/*
- * 合并多个对象
- * @param 参数个数不定, 每个参数为一个对象
- */
-export const merge = (...args) => {
-  console.log('>>> args', args);
-}
-
-/*
+/**
  * 格式化日期
- * @param date Date实例 or 数值 or 字符串数值
- * @param format 日期格式, default: yyyy-MM-dd
+ * @param {date} Date实例 or 数值 or 字符串数值
+ * @param {format} 日期格式, default: yyyy-MM-dd
  */
 const defaultFormat = 'yyyy-MM-dd';
 const formatList = ['yyyy-MM-dd', 'yyyy-MM', 'MM-dd', 'yyyy-MM-dd HH:mm:ss',
   'yyyy-MM-dd HH:mm', 'MM-dd HH:mm:ss', 'MM-dd HH:mm', 'HH:mm:ss', 'HH:mm'
 ];
-export const formatDate = (date, format = defaultFormat) => {
+
+export function formatDate(date, format = defaultFormat) {
   const type = getType(date);
   format = formatList.includes(format) ? format : defaultFormat;
   if(!['date', 'string', 'number'].includes(type)) {
@@ -148,11 +141,11 @@ export const formatDate = (date, format = defaultFormat) => {
   return finalDate;
 }
 
-/*
+/**
  * 判断年份是否为闰年
- * @param year 年份
+ * @param {year} 年份
  */
-export const isLeapYear = year => {
+export function isLeapYear(year) {
   const type = getType(year);
   year = Number(year)
   if(!['string', 'number'].includes(type)) {
@@ -170,7 +163,7 @@ export const isLeapYear = year => {
 /*
  * 获取浏览器版本信息
  */
-export const getBrowserVersion = () => {
+export function getBrowserVersion() {
   let browser = '';
   const ua = window.navigator.userAgent.toLowerCase();
   if(ua.includes('chrome') && ua.includes('safari') && !ua.includes('edge')) {
@@ -206,11 +199,11 @@ export const getBrowserVersion = () => {
   return browser;
 }
 
-/*
+/**
  * 每隔3位加上',', 小数点部分除外
- * @param num 传入的数字
+ * @param {num} 传入的数字
  */
-export const miliFormat = num => {
+export function miliFormat(num) {
   const type = getType(num);
   let val = Number(num);
   if(!['string', 'number'].includes(type)) {
@@ -236,10 +229,10 @@ export const miliFormat = num => {
   return val.toString().replace(/(^|\s)\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','));
 }
 
-/*
+/**
  * 检测平台, pc or mobile
  */
-export const judgePlatform = () => {
+export function judgePlatform() {
   const userAgent = navigator.userAgent.toLowerCase();
   const agents = ['android', 'iphone', 'windows phone', 'ipad', 'ipod'];
   for(const agent of agents) {
@@ -250,19 +243,19 @@ export const judgePlatform = () => {
   return 'pc';
 }
 
-/*
+/**
  * 判断一个值是否未定义
- * @param val 检测的值
+ * @param {val} 检测的值
  */
-export const isUndef = val => {
+export function isUndef(val) {
   return val === undefined || val === null;
 }
 
-/*
+/**
  * 判断一个值是否为空, 支持检测的类型有限
- * @param val 检测的值
+ * @param {val} 检测的值
  */
-export const isEmpty = val => {
+export function isEmpty(val) {
   if(isUndef(val)) {
     throw new Error('val is not defined');
   }
@@ -278,4 +271,19 @@ export const isEmpty = val => {
     return val.size() === 0;
   }
   return false;
+}
+
+/**
+ * 判断一个对象是否是原生对象
+ * @param {obj} 传入的对象
+ */
+export function isPlainObject(obj) {
+  if(typeof obj !== 'object' || obj === null) return false;
+
+  let __proto__ = obj;
+  while(Object.getPrototypeOf(__proto__) !== null) {
+    __proto__ = Object.getPrototypeOf(__proto__);
+  }
+
+  return Object.getPrototypeOf(obj) === __proto__;
 }
